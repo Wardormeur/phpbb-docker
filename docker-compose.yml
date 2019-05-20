@@ -1,0 +1,28 @@
+version: '3'
+services:
+  # TODO : consolidate info from install-config.yaml
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: 'test'
+      MYSQL_DATABASE: 'phpbb'
+  phpbb:
+    build: . 
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      SERVER_NAME: localhost
+      DBHOST: mysql 
+      DBPASSWD: 'test'
+      DBUSER: 'root'
+      PHPBB_INSTALLED: 'false'
+      #PHPBB_INSTALLED: 'true'
+      AUTO_DB_MIGRATE: 'false'
+    depends_on:
+      - mysql
+    volumes:
+      #- ../phpbb/phpBB:/phpbb/:Z
+      #- /home/wardormeur/Public/phpbb-cache-ext/wardormeur/ext_skeleton:/var/www/html/ext/phpbb/ext_skeleton/:Z
+      - /home/wardormeur/Public/phpbb-cache-ext/wardormeur/anoncache:/var/www/html/ext/wardormeur/anoncache:Z
+      - /home/wardormeur/Public/phpbb-docker/.htaccess:/var/www/html/.htaccess:Z
